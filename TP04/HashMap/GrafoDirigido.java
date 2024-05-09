@@ -130,12 +130,21 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos() {
-		
+		/*Creo la lista a retornar */
+		LinkedList<Arco<T>> retorno = new LinkedList<>();
+		/*Itero cada una de mis listas de arcos de cada uno de los vertices */
+		for(LinkedList<Arco<T>> elem : arcos.values()){
+			/*Agrego las listas de arcos de cada uno de mis vertices */
+			retorno.addAll(elem);
+		}
+		return retorno.iterator();
 	}
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos(int verticeId) {
-		// TODO Auto-generated method stub
+		if(arcos.containsKey(verticeId)){
+			return arcos.get(verticeId).iterator();
+		}
 		return null;
 	}
 
