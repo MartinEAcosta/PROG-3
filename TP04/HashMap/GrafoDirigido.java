@@ -7,21 +7,21 @@ import java.util.LinkedList;
 public class GrafoDirigido<T> implements Grafo<T> {
 
 	/*Integer seria el vertice, y la linkedList los adyacentes a el. */
-    private HashMap<Integer, LinkedList<Vertice>> vertices;
+    private HashMap<Integer, Vertice> vertices;
 	private HashMap<Integer, LinkedList<Arco<T>>> arcos; 
 
     public GrafoDirigido(){
-        vertices = new HashMap<Integer,LinkedList<Vertice>>();
+        vertices = new HashMap<Integer,Vertice>();
     }
 
 	@Override
 	public void agregarVertice(int verticeId) {
 		/*Si no contengo el vertice lo agrego*/
 		if(!vertices.containsKey(verticeId)){
-			/*Al agregar un vertice nuevo no tendra adyacentes
-			 * por lo tanto creo la lista vacia.			*/
-			LinkedList<Vertice> adyacentes = new LinkedList<>();
-			vertices.put(verticeId, adyacentes);
+			/*Creo el vertice*/
+			Vertice vertice = new Vertice(verticeId,null);
+			/*Agrego el vertice*/
+			vertices.put(verticeId, vertice);
         }
 	}
 
@@ -31,6 +31,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		if(vertices.containsKey(verticeId)){
 			/*Remuevo el vertice */
 			vertices.remove(verticeId);
+			/*Remuevo los adyacentes del vertice*/
+			arcos.get(verticeId).clear();
 		}
 	}
 
@@ -42,10 +44,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	@Override
 	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
 		if(vertices.containsKey(verticeId1) && vertices.containsKey(verticeId2)){
-			/*Agrego el vertice a la lista de adyacentes del vertice 1*/
-			vertices.get(verticeId1).addAll(vertices.get(verticeId2));
-			/*Creo la lista de arcos*/
-			LinkedList<Arco<T>> relacionArco = new LinkedList<Arco<T>>();
+			/*Creo la lista de arcos que es igual a el verticeId1 debido a que guarda LinkedList*/
+			LinkedList<Arco<T>> relacionArco = arcos.get(verticeId1);
 			/*Creo el arco a agregar*/
 			Arco<T> arco = new Arco<T>(verticeId1, verticeId2, etiqueta);
 			relacionArco.add(arco);
@@ -58,15 +58,10 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		/*Si existen los dos vertices */
 		if(vertices.containsKey(verticeId1) && vertices.containsKey(verticeId2)){
 			/*Pregunto si verticeId1 contiene como adyacente a verticeId2 */
-			Vertice adyacente = vertices.get(verticeId1).get(verticeId2);
-			if(adyacente != null){
-				/*Elimino el vertice de la lista de adyacentes del vertice 1*/
-				vertices.get(verticeId1).remove(adyacente);
-				/*Si el verticeId1 contiene arcos*/
-				if(arcos.containsKey(verticeId1)){
-					/*Elimino el arco*/
-					arcos.get(verticeId1).remove(obtenerArco(verticeId1, verticeId2));
-				}
+			Arco<T> elemAEliminar = obtenerArco(verticeId1, verticeId2);
+			if(elemAEliminar != null){
+				/*Si existe el arco lo elimino*/
+				arcos.remove(verticeId1,elemAEliminar);
 			}
 		}
 	}
@@ -119,9 +114,8 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		if(vertices.containsKey(verticeId)){
 			/*Creo la lista a retornar */
 			LinkedList<Integer> retorno = new LinkedList<>();
-			/*Por cada vertice adyacente agrego el id a la lista*/
-			for(Vertice elem : vertices.get(verticeId)){
-				retorno.add(elem.getId());
+			for(Arco<T> elem : arcos.get(verticeId)){
+				retorno.add(elem.getVerticeDestino());
 			}
 			return retorno.iterator();
 		}
@@ -147,5 +141,6 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		}
 		return null;
 	}
+
 
 }
