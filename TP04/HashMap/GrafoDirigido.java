@@ -130,11 +130,12 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		}
 		return null;
 	}
+	/*return arcos.get(verticeId).iterator();/ */
 
 	@Override
 	public Iterator<Arco<T>> obtenerArcos() {
 		/*Creo la lista a retornar */
-		LinkedList<Arco<T>> retorno = new LinkedList<>();
+		LinkedList<Arco<T>> retorno = new LinkedList<Arco<T>>();
 		/*Itero cada una de mis listas de arcos de cada uno de los vertices */
 		for(LinkedList<Arco<T>> elem : arcos.values()){
 			/*Agrego las listas de arcos de cada uno de mis vertices */
@@ -160,4 +161,10 @@ public class GrafoDirigido<T> implements Grafo<T> {
 			}
 		}
 	}
+
+	public void bfs(int verticeId){
+		
+
+	}
+
 }
