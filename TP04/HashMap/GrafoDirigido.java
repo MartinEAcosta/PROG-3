@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class GrafoDirigido<T> implements Grafo<T> {
 
-	/*Integer seria el id del vertiice, Luego el vertice en si */
+	/*Integer seria el id del vertice, Luego el vertice en si */
     private HashMap<Integer, Vertice> vertices;
 	/*Se guarda el id del vertice y la lista de arcos, de aca en un futuro se saca la lista de adyacentes */
 	private HashMap<Integer, LinkedList<Arco<T>>> arcos; 
@@ -48,12 +48,17 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	@Override
 	public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
 		if(vertices.containsKey(verticeId1) && vertices.containsKey(verticeId2)){
-			/*Creo la lista de arcos que es igual a el verticeId1 debido a que guarda LinkedList*/
-			LinkedList<Arco<T>> relacionArco = arcos.get(verticeId1);
+			LinkedList<Arco<T>> listaArcos = new LinkedList<>();
+			if(!arcos.containsKey(verticeId1)){
+				arcos.put(verticeId1, listaArcos);
+			}
+			else{
+				listaArcos = arcos.get(verticeId1);
+			}
 			/*Creo el arco a agregar*/
 			Arco<T> arco = new Arco<T>(verticeId1, verticeId2, etiqueta);
-			relacionArco.add(arco);
-			arcos.put(verticeId1, relacionArco);
+			listaArcos.add(arco);
+			arcos.put(verticeId1, listaArcos);
 		}
 	}
 
