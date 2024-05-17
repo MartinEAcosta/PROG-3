@@ -1,4 +1,4 @@
-package TP04.HashMap;
+package HashMap;
 
 import java.util.HashMap;
 import java.util.Iterator;

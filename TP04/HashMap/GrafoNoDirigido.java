@@ -1,4 +1,4 @@
-package TP04.HashMap;
+package HashMap;
 
 
 public class GrafoNoDirigido<T> extends GrafoDirigido<T> {
