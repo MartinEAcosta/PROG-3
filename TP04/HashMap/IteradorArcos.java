@@ -12,13 +12,11 @@ public class IteradorArcos<T> implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'hasNext'");
+        return iterador.hasNext();
     }
 
     @Override
     public Integer next() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'next'");
+        return iterador.next().getVerticeDestino();
     }
 }
