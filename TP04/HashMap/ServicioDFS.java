@@ -35,11 +35,10 @@ public class ServicioDFS<T> {
             if(colores.get(v) == "Blanco"){
                 dfsVisit(grafo, v);
             }
-            else if(colores.get(vertice) == "Amarillo"){
+            else if(colores.get(v) == "Amarillo"){
                 System.out.println("Hay ciclo");
             }
             colores.put(v, "Negro");
         }
     }
-
 }
