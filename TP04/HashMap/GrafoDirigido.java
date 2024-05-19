@@ -1,5 +1,6 @@
 package HashMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -145,5 +146,32 @@ public class GrafoDirigido<T> implements Grafo<T> {
 				}
 			}
 		}
+	}
+
+	public ArrayList<Integer> caminoMayor(int origen, int destino){
+		/*Deberia ser una variable de la clase */
+		ArrayList<Integer> visitados = new ArrayList<Integer>();
+		/* */
+		visitados.add(origen);
+		ArrayList<Integer> caminoMayor = new ArrayList<Integer>();
+		if(origen == destino){
+			caminoMayor.add(origen);
+		}
+		else{
+			Iterator<Integer> ady = obtenerAdyacentes(origen);
+			while(ady.hasNext()){
+				int v = ady.next();
+				if(!visitados.contains(v)){
+					ArrayList<Integer> caminoActual = caminoMayor(v,destino);
+					if((!caminoActual.isEmpty()) && (caminoActual.size() >= caminoMayor.size())){
+						caminoMayor.clear();
+						caminoMayor.add(origen);
+						caminoMayor.addAll(caminoActual);
+					}
+				}
+			}
+		}
+		visitados.remove(origen);
+		return caminoMayor;
 	}
 }

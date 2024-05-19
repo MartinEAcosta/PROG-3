@@ -27,17 +27,16 @@ public class ServicioBFS<T> {
         while(it2.hasNext()){
             Integer v = it2.next();
             if(nodos.get(v).equals("NO VISITADO")){
-                BFSvisit(grafo, v);
+                bfsVisit(grafo, v);
             }
         }
     }
 
-    public void BFSvisit(Grafo<T> grafo, int vertice){
+    public void bfsVisit(Grafo<T> grafo, int vertice){
         nodos.put(vertice, "VISITADO");
         cola.add(vertice);
         while(!cola.isEmpty()){
-            Integer v = cola.poll();
-            Iterator<Integer> it = grafo.obtenerAdyacentes(v);
+            Iterator<Integer> it = grafo.obtenerAdyacentes(vertice);
             while(it.hasNext()){
                 Integer w = it.next();
                 if(nodos.get(w).equals("NO VISITADO")){
