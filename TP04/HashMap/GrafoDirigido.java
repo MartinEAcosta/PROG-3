@@ -174,4 +174,85 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		visitados.remove(origen);
 		return caminoMayor;
 	}
+
+	
+	public ArrayList<Integer> verticesQueLlegan(Grafo<T> grafo, int destino){
+		ArrayList<Integer> llegaron = new ArrayList<>();
+		Iterator<Integer> listaVertices = obtenerVertices();
+		while (listaVertices.hasNext()) {
+			int i = listaVertices.next();
+			if(!llegaron.contains(i)){
+				llegaron.addAll(verticesQueLlegan(grafo, destino,i,new ArrayList<>()));
+			}
+		}
+		return llegaron;
+	}
+
+
+	private ArrayList<Integer> verticesQueLlegan(Grafo<T> grafo, int destino, int actual,ArrayList<Integer> camino){
+		if(actual != destino){
+			camino.add(actual);
+			Iterator<Integer> ady = obtenerAdyacentes(actual);
+			while(ady.hasNext()){
+				int vAdy = ady.next();
+				verticesQueLlegan(grafo, destino, vAdy, camino);
+			}
+		}
+		else{
+			camino.remove(actual);
+			return camino;
+		}
+		return null;
+		
+	}
+
+
+
+
+
+
+
+
+
+// /*
+// 		if(camino.isEmpty()){
+// 			/*Extraigo los vertices */
+// 			Iterator<Integer> listaVertices = obtenerVertices();
+// 			/*Pregunto si tengo vertices */
+// 			if(listaVertices.hasNext()){
+// 				/*Tomo el primero */
+// 				v = listaVertices.next();
+// 			}
+// 		}
+// 				if(!vQueLlegaron.contains(v)){
+// 					/*Si me toca el primero*/
+// 					if(v == destino){
+// 					/*lo agrego a la lista  */
+// 					vQueLlegaron.add(v);
+
+// 					}
+// 					else{
+// 						camino.add(v);
+// 						Iterator<Integer> ady = obtenerAdyacentes(v);
+// 						while (ady.hasNext()) {
+// 							int vAdy = ady.next();
+// 							verticesQueLlegan(grafo, vAdy, destino, camino);
+// 						}
+// 					}
+// 					if(camino.contains(destino)){
+// 						camino.remove(destino);
+// 						vQueLlegaron.addAll(camino);
+// 					}
+// 			/*Si no me toca el primero */
+// 			/*lo agrego al camino  */
+// 		/*Pregunto si tengo ady */
+// 		/*Mientras tenga ady */
+// 		/*tomo el primer ady */
+// 		/*llamo a recursión con el ady */
+// 		/*Saco de los que llegaron a destino */
+// 		/*Retorno los que llegaron */
+// 		return vQueLlegaron;
+
+// 	}
+	
 }
