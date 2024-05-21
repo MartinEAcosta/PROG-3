@@ -148,10 +148,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		}
 	}
 
-	public ArrayList<Integer> caminoMayor(int origen, int destino){
-		/*Deberia ser una variable de la clase */
-		ArrayList<Integer> visitados = new ArrayList<Integer>();
-		/* */
+	public ArrayList<Integer> caminoMayor(int origen, int destino, ArrayList<Integer> visitados){
 		visitados.add(origen);
 		ArrayList<Integer> caminoMayor = new ArrayList<Integer>();
 		if(origen == destino){
@@ -162,7 +159,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 			while(ady.hasNext()){
 				int v = ady.next();
 				if(!visitados.contains(v)){
-					ArrayList<Integer> caminoActual = caminoMayor(v,destino);
+					ArrayList<Integer> caminoActual = caminoMayor(v,destino, visitados);
 					if((!caminoActual.isEmpty()) && (caminoActual.size() >= caminoMayor.size())){
 						caminoMayor.clear();
 						caminoMayor.add(origen);

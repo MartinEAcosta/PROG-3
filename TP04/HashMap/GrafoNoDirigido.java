@@ -1,5 +1,7 @@
 package HashMap;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GrafoNoDirigido<T> extends GrafoDirigido<T> {
 
@@ -20,4 +22,27 @@ public class GrafoNoDirigido<T> extends GrafoDirigido<T> {
 		return super.cantidadArcos() / 2;
 	}
 
+	public ArrayList<Integer> caminoMenor(int origen, int destino,ArrayList<Integer> visitados){
+		visitados.add(origen);
+		ArrayList<Integer> caminoMenor = new ArrayList<Integer>();
+		if(origen == destino){
+			caminoMenor.add(origen);
+		}
+		else{
+			Iterator<Integer> ady = obtenerAdyacentes(origen);
+			while(ady.hasNext()){
+				int verticeAdy = ady.next();
+				if(!visitados.contains(verticeAdy)){
+					ArrayList<Integer> camino = caminoMenor(verticeAdy, destino, visitados);
+					if((camino != null) && (camino.size() <= caminoMenor.size())){
+						caminoMenor.clear();
+						caminoMenor.add(origen);
+						caminoMenor.addAll(camino);
+					}
+				}
+			}
+		}
+		visitados.remove(destino);
+		return caminoMenor;
+	}
 }
