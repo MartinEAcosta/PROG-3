@@ -1,4 +1,4 @@
-package HashMap;
+package TP05;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	public void agregarVertice(int verticeId) {
 		/*Si no contengo el vertice lo agrego a mi HashMap*/
 		if(!arcos.containsKey(verticeId)){
-			arcos.put(verticeId,new LinkedList<Arco<T>>());
+			this.arcos.put(verticeId,new LinkedList<Arco<T>>());
         }
 	}
 
@@ -173,11 +173,36 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		return caminoMayor;
 	}
 
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+	
+	public ArrayList<Integer> verticesQueLlegan(Grafo<T> grafo, int destino){
+		ArrayList<Integer> llegaron = new ArrayList<>();
+		Iterator<Integer> listaVertices = obtenerVertices();
+		while (listaVertices.hasNext()) {
+			int i = listaVertices.next();
+			if(!llegaron.contains(i)){
+				llegaron.addAll(verticesQueLlegan(grafo, destino,i,new ArrayList<>()));
+			}
+		}
+		return llegaron;
 	}
+
+
+	private ArrayList<Integer> verticesQueLlegan(Grafo<T> grafo, int destino, int actual,ArrayList<Integer> camino){
+		if(actual != destino){
+			camino.add(actual);
+			Iterator<Integer> ady = obtenerAdyacentes(actual);
+			while(ady.hasNext()){
+				int vAdy = ady.next();
+				verticesQueLlegan(grafo, destino, vAdy, camino);
+			}
+		}
+		else{
+			camino.remove(actual);
+			return camino;
+		}
+		return null;		
+	}
+	
 }
 
 

@@ -1,8 +1,7 @@
-package HashMap;
+package TP05;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 
 
 public class LongestBranch<T> {
@@ -15,12 +14,12 @@ public class LongestBranch<T> {
         this.caminoMayor = new ArrayList<>();
     }
 
-    public ArrayList<Integer> getLongestExit(GrafoNoDirigido<T> grafo,int entrada, int salida){
+    public ArrayList<Integer> getLongestExit(GrafoDirigido<T> grafo,int entrada, int salida){
         ArrayList<Integer> camino = new ArrayList<>();
         return getLongestExit(grafo,entrada, salida,camino);
     }
 
-	private ArrayList<Integer> getLongestExit(GrafoNoDirigido<T> grafo,int entrada, int salida, ArrayList<Integer> recorridoActual){
+	private ArrayList<Integer> getLongestExit(GrafoDirigido<T> grafo,int entrada, int salida, ArrayList<Integer> recorridoActual){
         recorridoActual.add(entrada);
         visitados.add(entrada);
         if(entrada == salida){
@@ -38,7 +37,6 @@ public class LongestBranch<T> {
                 }
             }
         }
-        visitados.remove(entrada);
         return caminoMayor;
 	}
 
