@@ -1,7 +1,5 @@
 package TP05;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Casilla {
     

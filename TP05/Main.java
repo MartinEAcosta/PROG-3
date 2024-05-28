@@ -1,6 +1,7 @@
 package TP05;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main {
 
@@ -36,7 +37,7 @@ public class Main {
 		}
 		*/
 
-
+		/*
 		Casilla[][] valores = {
 			{new Casilla(7, false, true, true, false), new Casilla(11, false, true, false, false), new Casilla(6, false, false, true, false)},
 			{new Casilla(3, false, false, true, false), new Casilla(9, false, false, false, false), new Casilla(4, false, false, true, false)},
@@ -58,8 +59,20 @@ public class Main {
 		ShortestWay algoritmo = new ShortestWay();
 
 		System.out.println(algoritmo.getShortestWay(mat, 0, 0, 1, 2));
+ 	*/
 
-		
+	Conjunto algortimo = new Conjunto();
+	algortimo.addSubconjunto(6);
+	algortimo.addSubconjunto(15);
+	algortimo.addSubconjunto(5);
+	algortimo.addSubconjunto(3);
+	algortimo.addSubconjunto(2);
+
+	HashMap<Integer,ArrayList<Integer>> combinaciones = algortimo.combinacionesIgualAX(20);
+
+	for(Integer elem : combinaciones.values().iterator().next()){
+		System.out.println(elem + " : " + combinaciones.get(elem));
+	}
 	}
 
 }
