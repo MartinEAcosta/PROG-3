@@ -68,11 +68,18 @@ public class Main {
 	algortimo.addSubconjunto(3);
 	algortimo.addSubconjunto(2);
 
-	HashMap<Integer,ArrayList<Integer>> combinaciones = algortimo.combinacionesIgualAX(20);
 
-	for(Integer elem : combinaciones.values().iterator().next()){
-		System.out.println(elem + " : " + combinaciones.get(elem));
-	}
+	
+
+		ArrayList<ArrayList<Integer>> combi = algortimo.combinacionesPosibles(20);
+		for(int i = 0; i<combi.size();i++){
+			for(int j = 0; j<combi.get(i).size();j++){
+				System.out.print(combi.get(i).get(j) + " ");
+			}
+			System.out.println("|");
+		}
+			
+
 	}
 
 }
