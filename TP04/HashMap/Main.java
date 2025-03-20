@@ -33,6 +33,7 @@ public class Main {
 		for(int i = 0; i<cam.size(); i++){
 			System.out.println(cam.get(i) + " ");
 		}
+		
 	}
 
 }

@@ -1,7 +1,14 @@
 package TP03;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.w3c.dom.Node;
+
+import HashMap.Grafo;
+import tp4.Arco;
 
 public class Tree {
 
@@ -74,8 +81,9 @@ public class Tree {
     public boolean delete(int value){
         if(this.root != null){
             if(this.root.getValue() == value){
-                this.root = null;
-                return true;
+                if(hasDescendent(this.root)){
+                    this.root = reordenarArbol(this.root);
+                }
             }
             else{
                 return delete(this.root, value);
@@ -84,11 +92,40 @@ public class Tree {
         return false;
     }
 
+    private TreeNode reordenarArbol(TreeNode nodo) {
+        if(nodo.getLeft() != null && nodo.getRight() != null){
+            TreeNode aun = obtenerNMISD(nodo.getRight());
+            delete(aun.getValue());
+            return aun;
+        }
+        else if(nodo.getLeft() != null && nodo.getRight() == null){
+            return nodo.getLeft();
+        }
+        else if(nodo.getLeft() == null && nodo.getRight() != null){
+            return nodo.getRight();
+        }
+        return null;
+    }
+
+    private TreeNode obtenerNMISD(TreeNode nodo) {
+        if(nodo.getLeft() == null){
+            return nodo;
+        }
+        return obtenerNMISD(nodo.getLeft());
+    }
+
     private boolean delete(TreeNode actual,int value){
         if(value > actual.getValue() && actual.getRight() != null){
             if(actual.getRight().getValue() == value){
-                actual.getRight().setRight(null);
-                return true;
+                if(hasDescendent(actual.getRight())){
+                    TreeNode aun = reordenarArbol(actual.getRight());
+                    actual.setRight(aun);
+                    return true;
+                }
+                else{
+                    actual.setRight(null);
+                    return true;
+                }
             }
             else{
                 delete(actual.getRight(), value);
@@ -96,8 +133,15 @@ public class Tree {
         }
         else if(value < actual.getValue() && actual.getLeft() != null){
             if(actual.getLeft().getValue() == value){
-                actual.getLeft().setLeft(null);
-                return true;
+                if(hasDescendent(actual.getRight())){
+                    TreeNode aun = reordenarArbol(actual.getRight());
+                    actual.setRight(aun);
+                    return true;
+                }
+                else{
+                    actual.setRight(null);
+                    return true;
+                }
             }
             else{
                 delete(actual.getLeft(), value);
@@ -106,9 +150,14 @@ public class Tree {
         return false;
     }
 
+
+    private boolean hasDescendent(TreeNode right) {
+        return right.getLeft() != null || right.getRight() != null;
+    }
+
     public int getHeight(){
         if(this.root != null){
-            return 0 + Math.max(getHeight(root.getRight()), getHeight(root.getLeft()));
+            return 0 + Math.man(getHeight(root.getRight()), getHeight(root.getLeft()));
         }
         return 0;
     }
@@ -117,7 +166,7 @@ public class Tree {
         if(actual == null){
             return 0;
         }
-        return 1 + Math.max(getHeight(actual.getRight()), getHeight(actual.getLeft()));
+        return 1 + Math.man(getHeight(actual.getRight()), getHeight(actual.getLeft()));
     }
 
     private void printPosOrder(TreeNode actual){
@@ -184,21 +233,21 @@ public class Tree {
         }
     }
 
-    public Integer getMaxElem(){
+    public Integer getManElem(){
         if(this.root == null){
             return null;
         }
-        return getMaxElem(this.root.getRight());
+        return getManElem(this.root.getRight());
     }
 
-    private Integer getMaxElem(TreeNode actual){
+    private Integer getManElem(TreeNode actual){
         if(actual != null){
             if(actual.getRight() != null){
-                int maxElem = getMaxElem(actual.getRight());
-                return maxElem;
+                int manElem = getManElem(actual.getRight());
+                return manElem;
             }
-            int aux = actual.getValue();
-            return aux;
+            int aun = actual.getValue();
+            return aun;
         }
         return null;
     }
@@ -297,7 +346,7 @@ public class Tree {
             elems.add(actual.getValue());
             return elems;
         }
-        elems = getElemsElderlyThanK(actual.getRight(), num);
+        elems.addAll(getElemsElderlyThanK(actual.getRight(), num));
         elems.addAll(getElemsElderlyThanK(actual.getLeft(), num));
         return elems;
     }
@@ -360,4 +409,171 @@ public class Tree {
 
         return elems;
     }
+}
+
+
+public ArrayList<Node> greedy(Matriz mat){
+    ArrayList<Node> camino = new ArrayList<>();
+    //busco la mejor opción segun el criterio de empezar por el numero mas grande de la matriz
+    Node aun = obtenerMejorCandidato(mat);
+    camino.add(aun);
+    //mientras que tenga movimientos
+    while(aun.hasMovement()){
+        aun = obtenerMejorCandidato(mat,aun,camino);
+        if(aun != null){
+            camino.add(aun);
+        }
+    }
+    return camino;
+}
+
+public Node obtenerMejorCandidato(Matriz mat){
+    Node mejor = null;
+    int mejorCosto = Integer.MIN_VALUE;
+    for(int i = 0; i < mat.getFilas(); i++){
+        for(int j = 0; j < mat.getColumnas(); j++){
+            if(mat.getValor(i,j) > mejorCosto){
+                mejor = mat.getNode(i,j);
+            }
+        }
+    }
+    return mejor;
+}
+
+public Node obtenerMejorCandidato(Matriz mat, Node aun, ArrayList<Node> camino){
+    Node mejor = null;
+    int mejorOpcion = Integer.MIN_VALUE;
+    for(Node ady : mat.getAdyacentes(aun)){
+        if(!camino.contains(ady)){
+            if(aun.getValor() >= ady.getValor()){
+                if(ady.getValor() > mejorOpcion){
+                    mejor = ady;
+                    mejorOpcion = ady.getValor();
+                }
+            }
+        }
+    }
+    return mejor;
+}
+
+public Solucion backtracking(int n, int v ){
+    ArrayList<Integer> combinacion = new ArrayList<>();
+    int i = 1;
+    while(i < n){
+        combinacion.add(i);
+        if(sumar(combinacion)<v){
+            backtracking(n, v, i,combinacion);
+        }
+        combinacion.remove(i);
+    }
+    return sol;
+}
+
+private void backtracking(int n, int v, int actual, ArrayList<Integer> combinacion){
+    if(sumar(combinacion) == v){
+        if(!sol.esRepetida(combinacion)){
+            sol.agregarSolucion(combinacion);
+        }
+    }
+    else{
+        if(sumar(combinacion) < v){
+            int i = 1;
+            while(i< n){
+                if(!limiteRepetidos(i,combinacion)){
+                    combinacion.add(i);
+                    backtracking(n, v, i, combinacion);
+                    combinacion.remove(i);
+                }
+                i++;
+            }
+        }
+    }
+}
+
+public Figura trazar(Vertice origen, Grafo g){
+    //Figura tendra como atributo un lista de arcos 
+    Figura sol = new Figura(new ArrayList<Arco>());
+    //Por cada arco adyacente, es decir un posible movimiento.
+    for(Arco ad : g.obtenerArcos(origen)){
+        sol.addCamino(ad);
+        sol = trazar(sol.getVerticeDestino(), g,sol);
+        if(sol != null){
+            return sol;
+        }
+        sol.removeCamino(ad);
+    }
+    return null;
+}
+
+private Figura trazar(Vertice actual, Grafo<T> g, Figura sol){
+    //Si llego a 6 quiere decir que no me quedan arcos por visitar
+    //Ya que solo puedo pasar una vez por cada vertice (Son 5 vertices en total)
+    //Y no puedo levantar el lapiz del trazo.
+    if(sol.getCamino().length == 6){
+        return sol;
+    }
+    else{
+        //Por cada arco adyacente, es decir un posible movimiento.
+        Iterator<Arco> it = g.obtenerArcos(actual);
+        while(it.hasNext()){
+            Arco<T> sig = it.next();
+            //Si esta visitado no me interesa viajar a el por lo tanto chequeo antes.
+            if(!sol.hasVisited(sig)){
+                sol.addCamino(sig);
+                sol = trazar(sig.getVerticeDestino(), g, sol);
+                if(sol != null){
+                    return sol;
+                }
+                sol.removeCamino(sig);
+            }
+            //en caso de no estar visitado entra denuevo en el while y busca si hay mas arcos adyacentes
+        }
+        return null;
+    }
+}
+
+//Asumo que tengo un HashMap de visitados.
+public boolean obtenerCicloIgual(int x, Grafo g){
+    ArrayList<Vertice> camino = new ArrayList<>();
+    
+    //Por cada vertice que tomare como origen
+    //pinto a todos los vertices de blanco
+    
+    for(Vertice sel : g.obtenerVertices()){
+
+        for(Vertice v : g.obtenerVertices()){
+
+            visitados.put(v,"Blanco");
+
+        }
+
+        if(visitados.get(sel) == "Blanco"){
+            dfsModified(x,sel,g,camino);
+            if(cumple != false){
+                return cumple;
+            }
+        }
+
+    }
+    return false;
+}
+
+private void dfsModified(int x, Vertice actual, Grafo g, ArrayList<Vertice> camino){
+    visitados.put(actual,"Amarillo");
+    camino.add(actual);
+    Iterator<Vertice> it = g.obtenerAdyacentes(actual);
+    while(it.hasNext()){
+        Vertice sig = it.next();
+        if(visitados.get(sig) == "Blanco"){
+            dfsModified(x,sig,g,camino);
+        }
+        else if(visitados.get(sig) == "Amarillo"){
+            //si el vertice ya fue visitado y no es el origen
+            //entonces hay un ciclo
+            int suma = recopilarTotalCiclo(camino,sig);
+            this.cumple = (x == suma);
+        }
+    }
+    camino.remove(actual);
+    visitados.put(actual,"Negro");
 }

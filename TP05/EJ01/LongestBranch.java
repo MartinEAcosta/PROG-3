@@ -1,7 +1,9 @@
-package TP05;
+package TP05.EJ01;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import TP05.GrafoDirigido;
 
 
 public class LongestBranch<T> {

@@ -118,8 +118,13 @@ public class MySimpleLinkedList< T extends Comparable<T> > implements Iterable<T
 	
 	@Override
 	public String toString() {
-
-		return null;
+		String result = "Lista: ";
+		Node<T> aux  = this.first;
+		while(aux != null){
+			result +="[" aux.getInfo() + "][-->" + aux.getNext() "]";
+			aux = aux.getNext();
+		}
+		return result; 
 	}
 
 	@Override

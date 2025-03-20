@@ -50,7 +50,7 @@ public class Subconjunto {
 
     @Override
     public String toString() {
-        return "Subconjunto [elems=" + elems + "]";
+        return "Subconjunto [elems=" + elems + "]" + "Suma:" + suma;
     }
 
     
